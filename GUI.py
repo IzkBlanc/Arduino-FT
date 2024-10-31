@@ -4,9 +4,9 @@ import serial
 import threading
 import time
 
-# Configuração da porta serial
+# Porta serial
 try:
-    arduino = serial.Serial('COM3', 9600, timeout=1)  # Ajuste a porta correta!
+    arduino = serial.Serial('COM3', 9600, timeout=1)  
     print("Conectado ao Arduino.")
 except:
     messagebox.showerror("Erro", "Não foi possível conectar ao Arduino.")
@@ -16,8 +16,7 @@ class InterfaceArduino:
     def __init__(self, root):
         self.root = root
         self.root.title("Monitor de Fluxo de Água")
-
-        # Variáveis para armazenar dados
+#---------------------------------------------------------------------------------------------------
         self.taxa_fluxo = 0.0
         self.total_gasto = 0.0  # Total gasto em litros
 
@@ -49,8 +48,9 @@ class InterfaceArduino:
 
         self.exit_button = tk.Button(root, text="Sair", command=self.sair, font=("Arial", 12))
         self.exit_button.pack(pady=5)
+        #---------------------------------------------------------------------------------------------------
 
-        # Inicia a leitura assíncrona da porta serial
+        # Leitura da porta serial
         if arduino:
             self.ler_dados()
 
@@ -60,7 +60,7 @@ class InterfaceArduino:
                 try:
                     linha = arduino.readline().decode().strip()
                     if linha:
-                        print(f"Recebido: {linha}")  # Depuração
+                        print(f"Recebido: {linha}")  
                         self.exibir_registro(linha)
 
                         if linha.startswith("Taxa de fluxo:"):
@@ -78,7 +78,7 @@ class InterfaceArduino:
         self.taxa_fluxo = taxa_fluxo
         self.fluxo_label.config(text=f"Taxa de Fluxo: {self.taxa_fluxo:.2f} L/min")
 
-        # Acumula o total gasto (considerando leituras por minuto)
+        # Acumula o total gasto
         self.total_gasto += self.taxa_fluxo / 60  # Converte para litros por segundo
         self.total_label.config(text=f"Total Gasto: {self.total_gasto:.2f} L")
 
