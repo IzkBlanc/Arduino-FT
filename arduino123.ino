@@ -1,7 +1,7 @@
 #define LED_LARANJA 3  // LED laranja na porta 3
-#define SENSOR_FLUXO 2  // Pino com interrupção
+#define SENSOR_FLUXO 2  // Pino na porta 2
 
-#define MUITO_FLUXO 7  // Fluxo alto, define quando o LED acende
+#define MUITO_FLUXO 7  // Fluxo alto
 
 unsigned long pulsoAnterior = 0;
 float taxaFluxo = 0;
@@ -10,9 +10,9 @@ volatile unsigned int pulsos = 0;  // Contagem de pulsos
 void setup() {
   Serial.begin(9600);
 
-  // Configura o LED laranja como saída
+  // Configura o LED laranja
   pinMode(LED_LARANJA, OUTPUT);
-  digitalWrite(LED_LARANJA, LOW);  // Garante que o LED comece apagado
+  digitalWrite(LED_LARANJA, LOW);  // LED começa apagado
 
   // Configura o sensor de fluxo como entrada
   pinMode(SENSOR_FLUXO, INPUT);
@@ -28,9 +28,9 @@ void loop() {
 
     // Acende o LED laranja se o fluxo for alto
     if (taxaFluxo >= MUITO_FLUXO) {
-      digitalWrite(LED_LARANJA, HIGH);  // Liga o LED
+      digitalWrite(LED_LARANJA, HIGH);  // Liga o LED quando tá com fluxo alto
     } else {
-      digitalWrite(LED_LARANJA, LOW);  // Apaga o LED
+      digitalWrite(LED_LARANJA, LOW);  // Apaga o LED quando o fluxo deixa de ser considerado alto
     }
 
     // Exibe a taxa de fluxo no Serial Monitor
@@ -54,8 +54,8 @@ void contaPulso() {
 }
 
 float calcularFluxo() {
-  // Calcula a taxa de fluxo (ajuste conforme necessário)
-  float taxa = pulsos * 0.1;  // Exemplo: pulsos * fator de conversão
+  // Calcula a taxa de fluxo 
+  float taxa = pulsos * 0.1; 
   pulsos = 0;  // Reseta a contagem para o próximo intervalo
   return taxa;
 }
